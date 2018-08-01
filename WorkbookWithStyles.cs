@@ -34,10 +34,10 @@ namespace WellNet.Excel
             _cellStyleLib = new CellStyleLib(this);
         }
 
-        internal void SetValueAndFormat(ICell cell, DateTime value, ConditionalStyle condStyle = ConditionalStyle.None)
+        internal void SetValueAndFormat(ICell cell, DateTime? value, ConditionalStyle condStyle = ConditionalStyle.None)
         {
-            if (value != null)
-                cell.SetCellValue(value);
+            if (value.HasValue)
+                cell.SetCellValue(value.Value);
             cell.CellStyle = _cellStyleLib.Get(CustomCellStyle.DateTime, condStyle);
         }
 
@@ -60,8 +60,6 @@ namespace WellNet.Excel
             const int WRAPTHRESHOLD = 50;
             if (!string.IsNullOrEmpty(value))
                 cell.SetCellValue(value);
-            else
-                return;
 
             var customCellStyle = CustomCellStyle.Default;
 

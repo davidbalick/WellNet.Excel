@@ -10,8 +10,8 @@ namespace TestConsoleApp
     {
         static void Main(string[] args)
         {
-            new DataToExcelShowChanges().DataSetToExcel(TestData1(), @"H:\Projects\HCI_NVX_to_WN\TestData1.xlsx", false);
-            //new DataToExcelShowChanges().DataSetToExcel(TestData2(), @"H:\Projects\HCI_NVX_to_WN\TestData2.xlsx", false);
+            //new DataToExcelShowChanges().DataSetToExcel(TestData1(), @"H:\Projects\HCI_NVX_to_WN\TestData1.xlsx", false);
+            new DataToExcelShowChanges().DataSetToExcel(TestData2(), @"H:\Projects\HCI_NVX_to_WN\TestData2.xlsx", false);
         }
 
         private static DataSet TestData1()
@@ -38,6 +38,8 @@ namespace TestConsoleApp
             dataTable.Columns.Add("Id", typeof(string));
             dataTable.Columns.Add("NVX stuff", typeof(string));
             dataTable.Columns.Add("WN stuff", typeof(string));
+            dataTable.Columns.Add("NVX Age", typeof(int));
+            dataTable.Columns.Add("WN Age", typeof(int));
             var newRow = dataTable.NewRow();
             newRow[0] = "Person 1";
             newRow[1] = "abc";
@@ -47,11 +49,20 @@ namespace TestConsoleApp
             newRow[0] = "Person 2";
             newRow[1] = "def";
             newRow[2] = "def";
+            newRow[3] = 47;
+            newRow[4] = 46;
             dataTable.Rows.Add(newRow);
             newRow = dataTable.NewRow();
             newRow[0] = "Person 3";
             newRow[1] = "ghi";
             newRow[2] = "jkl";
+            newRow[3] = 32;
+            newRow[4] = 32;
+            dataTable.Rows.Add(newRow);
+            newRow = dataTable.NewRow();
+            newRow[0] = "Person 4";
+            newRow[2] = "jkl";
+            newRow[3] = 64;
             dataTable.Rows.Add(newRow);
             return result;
         }

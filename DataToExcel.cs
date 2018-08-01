@@ -96,8 +96,7 @@ namespace WellNet.Excel
                     {
                         var colDataType = dataTable.Columns[columnIndex].DataType;
                         var obj = dataRow[columnIndex];
-                        if (obj == DBNull.Value)
-                            continue;
+                        var value = obj == DBNull.Value ? string.Empty : obj.ToString();
 
 						var condFormatting = ConditionalStyle.None;
 						if (ShowChanges && relatedColumns.IsDifferent(columnIndex))
@@ -106,13 +105,13 @@ namespace WellNet.Excel
                         var cell = row.CreateCell(columnIndex);
 
                         if (colDataType == typeof(decimal) || colDataType == typeof(double))
-                            workbook.SetValueAndFormat(cell, Convert.ToDouble(obj), condFormatting);
+                            workbook.SetValueAndFormat(cell, SafeConvertToDouble(value), condFormatting);
                         else if (colDataType == typeof(DateTime))
-                            workbook.SetValueAndFormat(cell, Convert.ToDateTime(obj), condFormatting);
+                            workbook.SetValueAndFormat(cell, SafeConvertToDateTime(value), condFormatting);
                         else if (colDataType == typeof(int))
-                            workbook.SetValueAndFormat(cell, (int)obj, condFormatting);
+                            workbook.SetValueAndFormat(cell, SafeConvertToInt(value), condFormatting);
                         else
-                            workbook.SetValueAndFormat(cell, obj.ToString(), condFormatting);
+                            workbook.SetValueAndFormat(cell, value, condFormatting);
                     }
                 }
                 if (ShowChanges)
@@ -179,6 +178,28 @@ namespace WellNet.Excel
                 result.Add(new RelatedColumnPair(new[] { i, colNameInfos.Single(cni => cni.ColIndex != i && cni.RelatedPart == thisRelatedPart).ColIndex }));
             }
             return result;
+        }
+
+        private static double? SafeConvertToDouble(string value)
+        {
+            double d;
+            if (double.TryParse(value, out d))
+                return d;
+            return null;
+        }
+        private static DateTime? SafeConvertToDateTime(string value)
+        {
+            DateTime d;
+            if (DateTime.TryParse(value, out d))
+                return d;
+            return null;
+        }
+        private static int? SafeConvertToInt(string value)
+        {
+            int i;
+            if (int.TryParse(value, out i))
+                return i;
+            return null;
         }
     }
     class ColInfo
